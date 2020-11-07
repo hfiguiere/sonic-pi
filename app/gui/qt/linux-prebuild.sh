@@ -40,6 +40,6 @@ PATH=`pkg-config --variable bindir Qt5`:$PATH lrelease "${SCRIPT_DIR}"/lang/*.ts
 
 echo "Compiling erlang files..."
 cd "${SCRIPT_DIR}/../../server/erlang/sonic_pi_server"
-erl -make
+erlc -o ebin/ src/osc/* src/pi_server/* src/sp_midi/*
 cp src/sonic_pi_server.app.src ebin/sonic_pi_server.app
 cd "${SCRIPT_DIR}"
