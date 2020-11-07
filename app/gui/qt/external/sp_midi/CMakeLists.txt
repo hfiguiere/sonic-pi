@@ -34,17 +34,16 @@ set(sp_midi_sources
     src/midicommon.cpp
     src/midisendprocessor.cpp
     src/utils.cpp
+    ${PROJECT_SOURCE_DIR}/external_libs/rtmidi/RtMidi.cpp
 )
 
 if(MSVC)
-    list(APPEND sp_midi_sources ${PROJECT_SOURCE_DIR}/external_libs/rtmidi/RtMidi.cpp)
     add_definitions(-D__WINDOWS_MM__)
-endif(MSVC)
-
-if(APPLE)
-    list(APPEND sp_midi_sources ${PROJECT_SOURCE_DIR}/external_libs/rtmidi/RtMidi.cpp)
+elseif(APPLE)
     add_definitions(-D__MACOSX_CORE__)
-endif(APPLE)
+elseif(UNIX)
+    add_definitions(-D__LINUX_ALSA__)
+endif(MSVC)
 
 if(APPLE)
     set(juce_sources
@@ -87,6 +86,6 @@ elseif(APPLE)
     target_link_libraries(libsp_midi "-framework CoreMIDI -framework CoreAudio -framework CoreFoundation -framework Accelerate -framework QuartzCore -framework AudioToolbox -framework IOKit -framework DiscRecording -framework Cocoa")
 elseif(UNIX)
     add_definitions(-DLINUX=1 -DNDEBUG=1 -DJUCER_LINUX_MAKE_6D53C8B4=1 -DJUCE_APP_VERSION=1.0.0 -DJUCE_APP_VERSION_HEX=0x10000)
-    target_link_libraries(libsp_midi pthread ${ALSA_LIBRARY} dl rtmidi)
+    target_link_libraries(libsp_midi pthread ${ALSA_LIBRARY} dl)
 endif(MSVC)
 
