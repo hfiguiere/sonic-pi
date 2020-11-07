@@ -13,7 +13,10 @@
 # notice is included.
 #++
 
-eval $(dbus-launch --auto-syntax)
+# we only need to dbus-lanch if there is not session bus.
+if test -z "$DBUS_SESSION_BUS_ADDRESS"; then
+    eval $(dbus-launch --auto-syntax)
+fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
